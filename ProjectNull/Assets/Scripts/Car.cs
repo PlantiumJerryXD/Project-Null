@@ -13,6 +13,8 @@ public class Car : MonoBehaviour
     Rigidbody Body;
     bool Drift = false;
 
+    public GameObject CarControllerManager;
+
     public Vector3 ForceForward;
     
     void Start()
