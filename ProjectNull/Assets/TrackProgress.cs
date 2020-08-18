@@ -16,9 +16,27 @@ public class TrackProgress : MonoBehaviour
     [SerializeField]
     Transform Kart;
 
+    [SerializeField]
+    bool DeriveFromChildren;
+
     float Lap = 0;
     void Start()
     {
+        List<Vector3> Temp = new List<Vector3>();
+        if (DeriveFromChildren)
+        {
+            foreach (Transform T in transform.GetComponentsInChildren<Transform>())
+            {
+                if (T != transform)
+                {
+                    Temp.Add(transform.worldToLocalMatrix.MultiplyPoint(T.position));
+                    Destroy(T.gameObject);
+                }
+            }
+            TrackMarkers = Temp.ToArray();
+        }
+
+        
         Length = 0;
         int i = 0;
         foreach (Vector3 M in TrackMarkers)
