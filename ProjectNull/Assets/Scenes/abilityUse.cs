@@ -7,6 +7,7 @@ public class abilityUse : MonoBehaviour
     public GameObject A;
     public GameObject X;
     public GameObject B;
+
     // Start is called before the first frame update
     void Start()
     {
