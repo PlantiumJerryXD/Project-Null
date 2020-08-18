@@ -8,7 +8,7 @@ public class Car : MonoBehaviour
     [SerializeField]
     float AccelertionStat = 25;
 
-    
+    float O;
     public float MaxSpeed = 100;
     Rigidbody Body;
     bool Drift = false;
@@ -16,21 +16,38 @@ public class Car : MonoBehaviour
     public GameObject CarControllerManager;
 
     public Vector3 ForceForward;
-    
+    [SerializeField]
+    bool IsPlayer = false;
     void Start()
     {
+        O = Time.fixedDeltaTime;
         Body = transform.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Accelerate();
-        Drift = Input.GetAxis("Drift") == 1;
-        CapSpeed();
+        if (IsPlayer)
+        {
+            Accelerate();
+            Drift = Input.GetAxis("Drift") == 1;
+            CapSpeed();
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                Time.timeScale = .1f;
+                Time.fixedDeltaTime = O * .1f;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                Time.fixedDeltaTime = O;
+            }
+        }
+        
     }
 
-    void CapSpeed()
+    public void CapSpeed()
     {
         float Speed = Body.velocity.magnitude;
 
@@ -48,16 +65,23 @@ public class Car : MonoBehaviour
         
     }
 
-    void Accelerate()
+    public void Accelerate()
     {
-        Body.AddForce(Time.deltaTime * AccelertionStat * ForceForward * Input.GetAxis("Vertical"),ForceMode.Acceleration);
-
-        if (Input.GetAxis("Vertical") == 0)
+        if (IsPlayer)
         {
-            Body.drag = 1;
+            Body.AddForce(Time.deltaTime * AccelertionStat * ForceForward * Input.GetAxis("Vertical"), ForceMode.Acceleration);
+
+            if (Input.GetAxis("Vertical") == 0)
+            {
+                Body.drag = 1;
+            }
+            else
+            {
+                Body.drag = .1f;
+            }
         } else
         {
-            Body.drag = .1f;
+            Body.AddForce(Time.deltaTime * AccelertionStat * ForceForward, ForceMode.Acceleration);
         }
 
     }

@@ -49,7 +49,7 @@ public class RotationController : MonoBehaviour
 
         if (NormalTransitionTimer <= 1)
         {
-            transform.rotation = Quaternion.LookRotation(Vector3.Lerp(PrevForward, NormalTransition, NormalTransitionTimer));
+            //transform.rotation = Quaternion.LookRotation(Vector3.Lerp(PrevForward, NormalTransition, NormalTransitionTimer));
             NormalTransitionTimer += Time.deltaTime * 16 * (Mathf.Clamp(1 /(CarController.MaxSpeed) * Body.velocity.magnitude * Vector3.Dot(CarController.ForceForward,Body.velocity),.2f,1));
             NormalTransitionTimer = Mathf.Clamp(NormalTransitionTimer, 0, 1);
         }
