@@ -19,12 +19,19 @@ public class AIController : MonoBehaviour
     float CliffAvoidanceFOV = 80;
     [SerializeField]
     float CliffAvoidanceLookAhead = 25;
+    [SerializeField]
+    float RandomizeParams = 5;
 
+    [SerializeField]
+    bool debug;
     Vector3 Target;
     void Start()
     {
         Body = transform.GetComponent<Rigidbody>();
-
+        FramesLookAheadWallAvoidance += Random.Range(-RandomizeParams, RandomizeParams);
+        WallAvoidanceFOV += Random.Range(-RandomizeParams, RandomizeParams);
+        CliffAvoidanceFOV   += Random.Range(-RandomizeParams, RandomizeParams);
+        CliffAvoidanceLookAhead += Random.Range(-RandomizeParams, RandomizeParams);
 
     }
 
@@ -41,15 +48,21 @@ public class AIController : MonoBehaviour
         if (index > Track.TrackMarkers.Length - 1) { index = 0; }
         
         Target = Track.transform.localToWorldMatrix.MultiplyPoint(Track.TrackMarkers[index]);
-        
-        
-        
+
+
+        if (debug)
+        {
+            Debug.DrawRay(transform.position, (Target - transform.position).normalized , new Color(255, 255, 0));
+        }
+
+        transform.rotation = Quaternion.LookRotation(Vector3.Lerp(transform.forward,(Target - transform.position).normalized,1 * Time.deltaTime));
+        transform.rotation = Quaternion.Euler(new Vector3(0, transform.rotation.eulerAngles.y, 0));
+
         
         AvoidCliffs();
         AvoidWalls();
 
-        Body.rotation = Quaternion.LookRotation(Vector3.Lerp(transform.forward, Target - transform.position, Time.deltaTime));
-        Body.rotation = Quaternion.Euler(new Vector3(0, Body.rotation.eulerAngles.y, 0));
+        
     }
     void Rotate()
     {
@@ -78,21 +91,32 @@ public class AIController : MonoBehaviour
             if (!Physics.Raycast(transform.position + Ang * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, 8))
             {
                 RotateTo = Vector3.Lerp(Ang2, RotateTo, .2f);
-                Debug.DrawRay(transform.position + Ang * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, new Color(255, 0, 0));
-
+                if (debug)
+                {
+                    Debug.DrawRay(transform.position + Ang * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, new Color(255, 0, 0));
+                }
             }
             else
             {
-                Debug.DrawRay(transform.position + Ang * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, new Color(0, 255, 0));
+                if (debug)
+                {
+                    Debug.DrawRay(transform.position + Ang * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, new Color(0, 255, 0));
+                }
             }
 
             if (!Physics.Raycast(transform.position + Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, 8))
             {
                 RotateTo = Vector3.Lerp(Ang, RotateTo, .2f);
-                Debug.DrawRay(transform.position + Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, new Color(255, 0, 0));
+                if (debug)
+                {
+                    Debug.DrawRay(transform.position + Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, new Color(255, 0, 0));
+                }
             }else
             {
-                Debug.DrawRay(transform.position + Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, new Color(0, 255, 0));
+                if (debug)
+                {
+                    Debug.DrawRay(transform.position + Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * CliffAvoidanceLookAhead, Vector3.down, new Color(0, 255, 0));
+                }
             }
             
            
@@ -113,33 +137,45 @@ public class AIController : MonoBehaviour
 
             float DistanceModifier = 1; //Mathf.Lerp(1, GreaterAnglesLessDistance, (1 / 80) * i);
 
-
+            LayerMask L = ~(1 << 2);
             RaycastHit Hit;
 
-            if (Physics.Raycast(transform.position, Ang, out Hit,Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier))
+            if (Physics.Raycast(transform.position, Ang, out Hit,Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier,L))
             {
                 RotateTo = Vector3.Lerp(Ang2, RotateTo, 1 / Body.velocity.magnitude * Hit.distance);
-                Debug.DrawRay(transform.position, Ang * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 0, 0));
+                if (debug)
+                {
+                    Debug.DrawRay(transform.position, Ang * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 0, 0));
+                }
                 
             } else
             {
-                Debug.DrawRay(transform.position, Ang * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 255, 255));
+                if (debug)
+                {
+                    Debug.DrawRay(transform.position, Ang * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 255, 255));
+                }
             }
-            if (Physics.Raycast(transform.position, Ang2, out Hit, Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier))
+            if (Physics.Raycast(transform.position, Ang2, out Hit, Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier,L))
             {
                 RotateTo = Vector3.Lerp(Ang, RotateTo, 1 / Body.velocity.magnitude * Hit.distance);
-                Debug.DrawRay(transform.position, Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255,0,0));
+                if (debug)
+                {
+                    Debug.DrawRay(transform.position, Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 0, 0));
+                }
 
             } else
             {
-                Debug.DrawRay(transform.position, Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 255, 255));
+                if (debug)
+                {
+                    Debug.DrawRay(transform.position, Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 255, 255));
+                }
             }
 
             
 
         }
 
-        transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(RotateTo),Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(RotateTo),Time.deltaTime * 1);
     }
 
 

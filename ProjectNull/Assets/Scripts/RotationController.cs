@@ -58,7 +58,7 @@ public class RotationController : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,Yaw, transform.rotation.eulerAngles.z);
 
-        Yaw += Input.GetAxis("Horizontal") * Time.deltaTime * 35;
+        Yaw += Input.GetAxis("Horizontal") * Time.deltaTime * 65;
     }
 
     
