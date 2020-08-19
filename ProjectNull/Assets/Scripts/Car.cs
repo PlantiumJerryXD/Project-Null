@@ -77,7 +77,7 @@ public class Car : MonoBehaviour
             }
             else
             {
-                Body.drag = .1f;
+                Body.drag = 0;
             }
         } else
         {
