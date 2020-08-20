@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
+    Rigidbody rb;
     public GameObject prefab;
     public GameObject cone;
     public GameObject body;
@@ -34,7 +35,8 @@ public class Rocket : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        
+        rb = collision.gameObject.GetComponent<Rigidbody>();
+        rb.velocity = new Vector3(0,0,0);
         Destroy(prefab);
     }
 }
