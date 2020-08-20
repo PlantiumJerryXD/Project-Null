@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8575770546098854791}
   - component: {fileID: 8575770546098854788}
   - component: {fileID: 8575770546098854789}
+  - component: {fileID: -5990913536937500780}
   m_Layer: 0
   m_Name: ExampleKart
   m_TagString: Untagged
@@ -109,6 +110,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: -0.01, z: 0}
+--- !u!114 &-5990913536937500780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8575770546098854786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9124c610fd50b449231d0e9cf8223e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  A: {fileID: 0}
+  X: {fileID: 0}
+  B: {fileID: 0}
 --- !u!1 &8575770546654023212
 GameObject:
   m_ObjectHideFlags: 0
