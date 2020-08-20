@@ -13,6 +13,8 @@ public class Car : MonoBehaviour
     Rigidbody Body;
     bool Drift = false;
 
+    float SpeedBuilt;
+
     public GameObject CarControllerManager;
 
     public Vector3 ForceForward;
@@ -57,10 +59,19 @@ public class Car : MonoBehaviour
             Body.velocity = ForceForward * (Speed * Vector3.Dot(ForceForward,Body.velocity.normalized));
             Body.velocity = new Vector3(Body.velocity.x, y, Body.velocity.z);
             //Debug.Log(Vector3.Dot(transform.forward, Body.velocity.normalized));
-        } 
-        if (Speed > MaxSpeed)
+        }
+        else
         {
-            Body.velocity = Body.velocity.normalized * MaxSpeed;
+            SpeedBuilt += ((1 - Vector3.Dot(ForceForward, Body.velocity.normalized)) * Body.velocity).magnitude * Time.deltaTime;
+        }
+        if (Speed > MaxSpeed + SpeedBuilt)
+        {
+            Body.velocity = Body.velocity.normalized * (MaxSpeed + SpeedBuilt);
+        }
+        if (SpeedBuilt > 0 & !Drift)
+        {
+            SpeedBuilt -= Time.deltaTime;
+            SpeedBuilt = Mathf.Clamp(SpeedBuilt, 0, 50);
         }
         
     }

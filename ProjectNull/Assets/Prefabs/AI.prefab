@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2557926753132083526}
   - component: {fileID: 1763775412511911070}
   - component: {fileID: 6928201604806378707}
-  - component: {fileID: 38944834755933554}
+  - component: {fileID: 410826286990735017}
   m_Layer: 9
   m_Name: Car
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &38944834755933554
-MeshCollider:
+--- !u!136 &410826286990735017
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,10 +94,10 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6464399035473431680, guid: 3a79539cfca859d4ab8c38c189c05069, type: 3}
+  m_Radius: 0.01
+  m_Height: 0.04
+  m_Direction: 0
+  m_Center: {x: -0.0072489064, y: -0.0000099945455, z: 0.00090201735}
 --- !u!1 &2479369120760142669
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,7 +807,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1
-  m_Center: {x: 0, y: -0.01, z: 0}
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!114 &4155392327682615621
 MonoBehaviour:
   m_ObjectHideFlags: 0

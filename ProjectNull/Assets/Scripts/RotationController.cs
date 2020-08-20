@@ -54,7 +54,7 @@ public class RotationController : MonoBehaviour
             NormalTransitionTimer = Mathf.Clamp(NormalTransitionTimer, 0, 1);
         }
 
-        
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(CarController.ForceForward), 15 * Time.deltaTime);
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,Yaw, transform.rotation.eulerAngles.z);
 

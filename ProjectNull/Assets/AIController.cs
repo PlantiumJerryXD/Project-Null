@@ -22,6 +22,8 @@ public class AIController : MonoBehaviour
     [SerializeField]
     float RandomizeParams = 5;
 
+  
+
     [SerializeField]
     bool debug;
     Vector3 Target;
@@ -55,23 +57,30 @@ public class AIController : MonoBehaviour
             Debug.DrawRay(transform.position, (Target - transform.position).normalized , new Color(255, 255, 0));
         }
 
-        transform.rotation = Quaternion.LookRotation(Vector3.Lerp(transform.forward,(Target - transform.position).normalized,1 * Time.deltaTime));
-        transform.rotation = Quaternion.Euler(new Vector3(0, transform.rotation.eulerAngles.y, 0));
-
+        transform.rotation = Quaternion.LookRotation(Vector3.Lerp(transform.forward,new Vector3((Target - transform.position).normalized.x,0,( Target - transform.position).normalized.z),1 * Time.deltaTime));
+        //transform.rotation = Quaternion.Euler(new Vector3(0, transform.rotation.eulerAngles.y, 0));
+        
         
         AvoidCliffs();
         AvoidWalls();
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Controller.ForceForward), 15 * Time.deltaTime);
 
-        
+
     }
     void Rotate()
     {
         Body.angularVelocity = new Vector3();
         RaycastHit Hit;
-        if (Physics.Raycast(transform.position - (Vector3.up * .5f), Vector3.down, out Hit))
+        
+        if (Physics.Raycast(transform.position - (Vector3.up), Vector3.down, out Hit,4,~(1<<9)))
         {
-
+            //Debug.DrawRay(Hit.point, Hit.normal);
             Vector3 AlignedForward = Vector3.Cross(transform.right, Hit.normal);
+            Controller.ForceForward = AlignedForward;
+            
+        } else
+        {
+            Vector3 AlignedForward = new Vector3(transform.forward.x, 0, transform.forward.z);
             Controller.ForceForward = AlignedForward;
         }
 
@@ -142,10 +151,13 @@ public class AIController : MonoBehaviour
 
             if (Physics.Raycast(transform.position, Ang, out Hit,Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier,L))
             {
-                RotateTo = Vector3.Lerp(Ang2, RotateTo, 1 / Body.velocity.magnitude * Hit.distance);
-                if (debug)
+                if (Vector3.Dot(Hit.normal, transform.up) < .7f)
                 {
-                    Debug.DrawRay(transform.position, Ang * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 0, 0));
+                    RotateTo = Vector3.Lerp(Ang2, RotateTo, 1 / Body.velocity.magnitude * Hit.distance);
+                    if (debug)
+                    {
+                        Debug.DrawRay(transform.position, Ang * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 0, 0));
+                    }
                 }
                 
             } else
@@ -157,10 +169,13 @@ public class AIController : MonoBehaviour
             }
             if (Physics.Raycast(transform.position, Ang2, out Hit, Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier,L))
             {
-                RotateTo = Vector3.Lerp(Ang, RotateTo, 1 / Body.velocity.magnitude * Hit.distance);
-                if (debug)
+                if (Vector3.Dot(Hit.normal, transform.up) < .7f)
                 {
-                    Debug.DrawRay(transform.position, Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 0, 0));
+                    RotateTo = Vector3.Lerp(Ang, RotateTo, 1 / Body.velocity.magnitude * Hit.distance);
+                    if (debug)
+                    {
+                        Debug.DrawRay(transform.position, Ang2 * Body.velocity.magnitude * Time.fixedDeltaTime * FrameLookAhead * DistanceModifier, new Color(255, 0, 0));
+                    }
                 }
 
             } else
