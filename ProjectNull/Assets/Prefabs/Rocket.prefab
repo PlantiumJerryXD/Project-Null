@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1031661294885331120}
   - component: {fileID: 1031661294885331121}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Rocket_Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 7561172351730930847}
   - component: {fileID: 7876064458119605930}
   m_Layer: 0
-  m_Name: Cone
+  m_Name: Roecket_Cone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

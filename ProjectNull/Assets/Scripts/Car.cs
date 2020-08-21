@@ -7,7 +7,7 @@ public class Car : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField]
     float AccelertionStat = 25;
-
+    private Rigidbody rb;
     float O;
     public float MaxSpeed = 100;
     Rigidbody Body;
@@ -75,6 +75,16 @@ public class Car : MonoBehaviour
         }
         
     }
+
+    /*private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name.Contains("Rocket"))
+        {
+            rb = this.GetComponent<Rigidbody>();
+            rb.velocity = new Vector3(0 ,0 ,0);
+            Destroy(collision.gameObject);
+        }
+    }*/
 
     public void Accelerate()
     {
