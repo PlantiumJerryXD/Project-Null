@@ -5,15 +5,15 @@ using UnityEngine;
 public class abilityUse : MonoBehaviour
 {
     public GameObject Rocket;
-    public GameObject Shield;
+    //public GameObject Shield;
     public int rocketCD;
     public int shieldCD;
     float x,y,z;
-    float shieldTime, rocketTime;
+    float  rocketTime;
     // Start is called before the first frame update
     void Start()
     {
-        
+        rocketTime = rocketCD;
     }
 
     // Update is called once per frame
@@ -27,7 +27,12 @@ public class abilityUse : MonoBehaviour
             rocketTime = 0;
             Instantiate(Rocket, new Vector3(x, y, z), this.transform.rotation);
         }
-        
+        else if (Input.GetButtonDown("Ability1")&& rocketTime >= rocketCD)
+        {
+            rocketTime = 0;
+            Instantiate(Rocket, new Vector3(x, y, z), this.transform.rotation);
+        }
+
         rocketTime += Time.deltaTime;
     }
 }

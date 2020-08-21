@@ -204,7 +204,7 @@ MonoBehaviour:
   prefab: {fileID: 6533978000977456385}
   cone: {fileID: 2390569874416684250}
   body: {fileID: 1031661294885331126}
-  ms: 10
+  ms: 25
 --- !u!1 &5419440758545630890
 GameObject:
   m_ObjectHideFlags: 0
